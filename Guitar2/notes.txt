@@ -1,0 +1,63 @@
+- There are 3 classes
+    - GuitarString
+        - constructor()
+            - create a li (guitarString)
+        - playString()
+            - append pressed fret (span)
+    - Fret
+        - constructor()
+            - create a ul (fret)
+            - resetStrings()
+        - resetStrings()
+            - blank out this.element
+            - create this.strings [] blank array
+            - loop 6 times  
+                - push a new guitarString (li) into ths.strings
+            - call updateStrings()
+        - updateStrings()
+            - loop over this.strings[] (6 item array built in resetStrings())
+                - append each string (li) to this.element (the current ul)
+        - setString(num)
+            - 
+    - Fretboard
+        - initFrets()
+            - this.frets - define a blank array
+            - loop 10 times
+                - push a new Fret onto the array each time
+            - call updateFrets()
+        - updateFrets()
+            - blank out this.element
+            - loop over this.frets 
+                - append each fret (6 li) to the current element
+        - showChord(chord, name)
+            - map 'chord' to an array called 'notes'
+            - call reset()
+            - set the innerText of 'chord-name' to 'name'
+            - loop over notes "022200"
+                - create a new fret
+                - setString(i) for each new fret 
+            - updateFrets()
+        - reset()
+            - loop over this.frets
+                - for each fret call resetStrings()
+    
+- a "fretboard' (div) contains an array of 10 frets (ul)
+- each fret contains an array of 6 GuitarString (li)
+
+
+1. build aa blank fretboard = new fretboard(id)
+    a. creates all strings and frets (ul and li)
+2. run showChord(chord, name)
+    - clears all 
+    - uses the number of each note to 
+
+1. define a new fretboard
+    a. fretboard.name = assign the 'chord-name' element that will hold the select box
+    b. fretboard.element = find the element 'fretboard' (div) that will hold the guitar fretboard 
+    c. call initFrets()
+2. selector = find the element (select box) 'chord-selection'
+2.1 add an event listener to the select box. "change" event will call fretboard.showChord
+3. loop over object list of chords and populate 'chord-selection' with options
+4. call fretboard.showChord passing in chord object that is currently selected
+    a.now changing option will call showChord()
+5. fretboard.showChord()
