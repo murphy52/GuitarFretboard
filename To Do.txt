@@ -1,0 +1,88 @@
+To Do
+
+XX combine notemap and fretboard creation. 
+    XX fretboard should take the element id, tuning, and fret count
+- add a gradient to the nut
+-try different wood colors. Maybe add a subtle wood grain
+- add fret dots
+- allow tuning from closest string to futhest. Simple reverse the array before aplying it
+- fix strings so they are in the middle of each box
+X move indicator further to the left for open strings
+- slowly fade-in next chord tones so player can see whats coming
+- Functionality
+    1. Build a fretboard of any tuning, number of strings, and number of frets
+    2. be able to highlight all the chord tones for a given chord anywhere on the fret
+    3. be able to loop over chords (set tempo and set beat count for each chord) [em:4,G:4,D:3,C:1,em4]??
+    4. be able to pass in frets to finger to show a chord (chord name, fingering (0,2,2,0,0,2)). Maybe starting fret
+X clicking on a note can clear all other notes on the same string. This would allow you to visualize playable chords. You could create alternate tunings and find cool voicings. You could find great open voicings
+    X clicking it a second time will remove it as well
+- make clearString() it's own function so it can be used with the addEventListener button click or without
+- reset() just clears all span tags on fretboard
+- toggle note names on/off
+- allow keyboard input
+    - if you type a letter between A and G then render than chord and begin listening
+    - listen for b,#,m,7,dim,etc and redraw the chord as you type
+    - need to set focus when page loads to accept input
+- solve the problem of accidentals having two labes (D#/Eb)
+- Move the currentChord output to somewhere contained in the fretboard disply itself
+- make separate methods for:
+    - shoing all notes in a chord
+    - looping over chords
+    - show a specific chord 
+    - loop over specific chords
+    
+- write documentation
+- use keybpard arrows to move through given chords. I can change the highLightChord function to take an array
+- make it so the fretboard you want to interact with needs to be selected fo keyboard input
+- add UI controls
+    - start/stop playback
+    - clear
+    - forward/backg
+    - show what chord is highlighted
+    - show the pulse of the beat (maybe play a sound)
+- prev() and next() are based on beats not chords. These shouls be adjusted to move to the next and previous chord
+
+
+    BUGS:
+    - layering chords onto one another causes the new dots to be large
+    - XX Dots on first string don't line up
+    - modifier keys are either clearing dots or control registers as "C" and delete registers as "D"
+    - The size of the UL background is all out of wack
+    - number of frets constructor not working
+
+
+   
+   
+
+   FUNCTiONS
+
+    showScale(){
+        //show a specific set of strings and frets and highlight each note differently
+         - pass in an array of note positions and their interval ["5:3:1", "5:5:2","4:2:3"...] (string:fret:interval)
+         -    var dataString = '[data-string="3"][data-fret="2"]';
+                var matches = document.querySelectorAll(dataString);
+    }
+    ShowChord(){
+        //show a specific fingering of a chord (here is the D chord in the open position)
+       - same as showScale()
+       -    var dataString = '[data-string="3"][data-fret="2"]';
+                var matches = document.querySelectorAll(dataString);
+    }
+
+
+    showScaleTones(){
+        //highlight every instance of a given tone on the fretboard
+        - pass in an array of notes and their interval ["C:1", "D:2","E:3"...]
+        - convert intervals to class names
+        - hilightNote() - takes a note and a class name (or interval) and highlights them with the given color
+    }
+     showChordTones()/ playChordTones(){
+        //highlight all the chord tones for a given chord(s). play automatically or manually
+        - same as showScaleTones()
+    }
+
+    showChords()/playChords(){
+        // there are a group of specific chords that can. play automatically or manually
+        
+    }
+
