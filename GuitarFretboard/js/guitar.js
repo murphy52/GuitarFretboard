@@ -11,6 +11,7 @@ const fretboard = new Fretboard("fretboard", ['E', 'A', 'D', 'G', 'B', 'E'], 24)
 */
 
 
+
 class GuitarString {
     constructor() {
         this.element = document.createElement("li");
@@ -43,29 +44,13 @@ class Fret {
 
 class Fretboard {
     constructor(id, tuning, fretCount) {
-        this.id = id;
-        this.parentElement = document.getElementById(id);
+        this.element = document.getElementById(id);
         this.tuning = tuning;
-        this.fretCount = Math.min(fretCount + 1, 33);
-
-        this.noteMap = new NoteMap(this.tuning, this.fretCount).aStrings;
-
-        // setup containers
-        this.parentElement.classList.add("_gf_fretboard");
-
-        var node = document.createElement('div');
-        node.setAttribute('id', '_fretboard');
-        node.setAttribute('class', '_fretboard');
-        this.parentElement.appendChild(node);
-        this.element = this.parentElement.querySelector('#_fretboard')
-
-        var node2 = document.createElement('div');
-        node2.setAttribute('id', '_output');
-        this.parentElement.prepend(node2);
-
-
+        this.fretCount = Math.min(fretCount + 1,33);
         this.initFrets();
+        this.noteMap = new NoteMap(this.tuning, fretCount).aStrings;
         this.applyNoteMap(this.noteMap);
+
     }
 
     initFrets() {
@@ -90,28 +75,6 @@ class Fretboard {
                 this.frets[i].strings[j].element.setAttribute('data-string', i);
                 this.frets[i].strings[j].element.setAttribute('data-fret', j);
                 this.frets[i].strings[j].element.setAttribute('data-note', noteMap[i][j]);
-                // add fret markers
-                if ([
-                    3,
-                    5,
-                    7,
-                    9,
-                    12,
-                    15,
-                    17,
-                    19,
-                    21,
-                    24
-                ].includes(j) && i == Math.floor(this.tuning.length / 2)) {
-                    var node = document.createElement("div");
-                    node.classList.add("fretMarker");
-                    this.frets[i].strings[j].element.appendChild(node);
-                    if ([12, 24].includes(j) && i == Math.floor(this.tuning.length / 2)) {
-                        var node2 = document.createElement("div");
-                        node2.classList.add("fretMarker");
-                        this.frets[i].strings[j].element.appendChild(node2);
-                    }
-                }
             }
         }
     }
@@ -119,7 +82,7 @@ class Fretboard {
     selectNote(evt) {
         var spans = evt.path[2].querySelectorAll("span")
         var clickedNote = evt.path[0];
-        // the third item in the array is the UL containing all the frets. I could also do this by finding the data-string value and pass it to another function to reset the string and set new value(s)
+        //the third item in the array is the UL containing all the frets. I could also do this by finding the data-string value and pass it to another function to reset the string and set new value(s)
         if (spans.length == 1) {
             evt.path[0].remove();
         } else {
@@ -131,29 +94,19 @@ class Fretboard {
         }
     }
 
-    beatMarkerPulse() {
-        if (this.playChords && this.playChords.aChords > 1) {
-            if (this.parentElement.querySelector('#_beatMarker').classList.contains('beatMarker')) {
-                this.parentElement.querySelector('#_beatMarker').classList.remove("beatMarker");
-                this.parentElement.querySelector('#_beatMarker').classList.add("beatMarkerOff");
-            } else {
-                this.parentElement.querySelector('#_beatMarker').classList.add("beatMarker");
-                this.parentElement.querySelector('#_beatMarker').classList.remove("beatMarkerOff");
-            }
-        }
-    }
-
     highlightChord(chord) {
         this.hilightNotes(getNotesInChord(chord));
-        this.beatMarkerPulse();
-        if (this.parentElement.querySelector('#_output').innerText == chord) {
-            this.parentElement.querySelector('#_beatMarker').innerText = this.parentElement.querySelector('#_beatMarker').innerText + '.';
+        document.getElementById('beatMarker').classList.add("beatMarker");
+        document.getElementById('beatMarker').classList.remove("beatMarkerOff");
+        if (document.getElementById('currentChord').innerText == chord){
+            document.getElementById('beatMarker').innerText = document.getElementById('beatMarker').innerText + '.';
         } else {
-            this.parentElement.querySelector('#_beatMarker').innerText = '.';
-
+            document.getElementById('beatMarker').innerText =  '.';
+            
         }
-        this.beatMarkerPulse();
-        this.parentElement.querySelector('#_output').innerText = chord;
+        document.getElementById('beatMarker').classList.remove("beatMarker");
+        document.getElementById('beatMarker').classList.add("beatMarkerOff");
+        document.getElementById('currentChord').innerText = chord;
     }
 
     hilightNotes(aNotes) {
@@ -172,7 +125,7 @@ class Fretboard {
                 node.setAttribute('data-interval', intervals[i]);
 
                 matches[j].appendChild(node);
-                node.addEventListener("click", this.selectNote);
+                matches[j].addEventListener("click", this.selectNote);
             }
         }
     }
@@ -185,89 +138,58 @@ class Fretboard {
         }
     }
 
-    // ************************* */
-    nextChord() {
+    //************************* */
+    nextChord(){
         this.playChords.currentChordIndex = (this.playChords.currentChordIndex + 1) % this.playChords.aChords.length;
     }
-    previousChord() {
+    previousChord(){
         this.playChords.currentChordIndex = (this.playChords.currentChordIndex - 1 + this.playChords.aChords.length) % this.playChords.aChords.length;
     }
 
-    playCurrentChord() {
+    playCurrentChord(){
         this.highlightChord(this.playChords.getCurrentChord());
         this.nextChord();
-        this.timeout = setTimeout(this.playCurrentChord.bind(this), this.playChords.beatLen);
+        this.timeout = setTimeout(this.playCurrentChord.bind(this),this.playChords.beatLen);
     }
 
-    playChords(chords, bpm) {
-        this.playChords = new PlayChords(chords, bpm);
-        if (chords.length > 1) {
-            this.insertControls()
-        }
-        var node = document.createElement('div');
-        node.setAttribute('id', '_beatMarker');
-        this.parentElement.prepend(node);
-
+    playChords(chords,bpm){
+        this.playChords = new PlayChords(chords,bpm);
         this.playCurrentChord();
     }
 
-    // *** buttons  */
-    insertControls() {
-        var node = document.createElement('div');
-        node.setAttribute('id', '_gf_controls')
-        node.innerHTML = `
-            <button id="previous" onclick="${
-            this.id
-        }.prev()">Prev</button>
-            <button id="stop" onclick="${
-            this.id
-        }.stop()">Stop</button>
-            <button id="play" onclick="${
-            this.id
-        }.play()">play</button>
-            <button id="pause" onclick="${
-            this.id
-        }.pause()">Pause</button>
-            <button id="next"onclick="${
-            this.id
-        }.next()">Next</button>
-            <button id="clear" onclick="${
-            this.id
-        }.clear()">Clear</button>
-        `;
-        this.element.appendChild(node);
-    }
-
-    pause() {
+    //*** buttons  */
+    pause(){
         clearTimeout(this.timeout);
     }
 
-    play() {
+    play(){
         this.playCurrentChord();
     }
 
-    next() {
+    next(){
         clearTimeout(this.timeout);
         this.highlightChord(this.playChords.getCurrentChord());
         this.nextChord();
     }
 
-    prev() {
+    prev(){
         clearTimeout(this.timeout);
         this.previousChord();
         this.highlightChord(this.playChords.getCurrentChord());
     }
 
-    clear() {
+    clear(){
         this.removeNoteHighlights();
     }
 
-    stop() {
+    stop(){
         clearTimeout(this.timeout);
         this.removeNoteHighlights();
         this.playChords.currentChordIndex = 0;
-        this.parentElement.querySelector('#_output').innerText = '';
-        this.parentElement.querySelector('#_beatMarker').innerText = '';
+        document.getElementById('beatMarker').classList.remove("beatMarker");
+        document.getElementById('beatMarker').classList.remove("beatMarkerOff"); ///refactor this
+        document.getElementById('currentChord').innerText = '';
+        document.getElementById('beatMarker').innerText =  '';
     }
 }
 
@@ -275,20 +197,7 @@ class Fretboard {
 class NoteMap {
     constructor(aTuning, numberOfFrets) {
         this.aStrings = [];
-        this.aAllMusicNotes = [
-            'A',
-            'Bb',
-            'B',
-            'C',
-            'C#',
-            'D',
-            'Eb',
-            'E',
-            'F',
-            'F#',
-            'G',
-            'G#'
-        ];
+        this.aAllMusicNotes = ['A', 'Bb', 'B', 'C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'G#'];
         this.aTuning = aTuning.reverse();
         this.numberOfFrets = numberOfFrets + 1;
         this.buildNoteMap();
@@ -324,23 +233,18 @@ class PlayChords {
         for (let i = 0; i < chords.length; i++) {
             var aChordBeat = chords[i].split(":");
 
-            // aChords is 1 chord for each beat (4 beats if not specified)
-
+            //aChords is 1 chord for each beat (4 beats if not specified)
+        
             if (aChordBeat[1] != undefined) {
-                for (let j = 0; j < parseInt(aChordBeat[1]); j++) {
-                    this.aChords.push(aChordBeat[0])
-                }
+               for (let j = 0; j < parseInt(aChordBeat[1]); j++) { this.aChords.push(aChordBeat[0])}
             } else {
-                for (let j = 0; j < 4; j++) {
-                    this.aChords.push(aChordBeat[0])
-                }
+                for (let j = 0; j < 4; j++) { this.aChords.push(aChordBeat[0])}
             }
         }
     }
 
-    getCurrentChord() {
+    getCurrentChord(){
         return this.aChords[this.currentChordIndex];
     }
 
 }
-

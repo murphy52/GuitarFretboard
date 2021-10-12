@@ -2,53 +2,75 @@ To Do
 
 XX combine notemap and fretboard creation. 
     XX fretboard should take the element id, tuning, and fret count
-- add a gradient to the nut
--try different wood colors. Maybe add a subtle wood grain
-- add fret dots
-- allow tuning from closest string to futhest. Simple reverse the array before aplying it
-- fix strings so they are in the middle of each box
-X move indicator further to the left for open strings
-- slowly fade-in next chord tones so player can see whats coming
-- Functionality
-    1. Build a fretboard of any tuning, number of strings, and number of frets
-    2. be able to highlight all the chord tones for a given chord anywhere on the fret
-    3. be able to loop over chords (set tempo and set beat count for each chord) [em:4,G:4,D:3,C:1,em4]??
-    4. be able to pass in frets to finger to show a chord (chord name, fingering (0,2,2,0,0,2)). Maybe starting fret
+XX allow tuning from closest string to futhest. Simple reverse the array before aplying it
+XX fix strings so they are in the middle of each box
+XX move indicator further to the left for open strings
 X clicking on a note can clear all other notes on the same string. This would allow you to visualize playable chords. You could create alternate tunings and find cool voicings. You could find great open voicings
     X clicking it a second time will remove it as well
-- make clearString() it's own function so it can be used with the addEventListener button click or without
-- reset() just clears all span tags on fretboard
+XX reset() just clears all span tags on fretboard
+
+
+
+
+- add a gradient to the nut
+- try different wood colors. Maybe add a subtle wood grain
+- add fret dots
+- slowly fade-in next chord tones so player can see whats coming
+- Functionality
+    1. XX Build a fretboard of any tuning, number of strings, and number of frets
+    2. XX be able to highlight all the chord tones for a given chord anywhere on the fret
+    3. XX Xbe able to loop over chords (set tempo and set beat count for each chord) [em:4,G:4,D:3,C:1,em4]??
+    4. be able to pass in frets to finger to show a chord (chord name, fingering (0,2,2,0,0,2)). Maybe starting fret
+
+    XX make clearString() it's own function so it can be used with the addEventListener button click or without
+
+- show the chords you are looping over and highlight them, and their beats, when you get to them [A] [D] [G] [F#m]
+    - loop over given chords and output them in their own divs
 - toggle note names on/off
-- allow keyboard input
-    - if you type a letter between A and G then render than chord and begin listening
-    - listen for b,#,m,7,dim,etc and redraw the chord as you type
+XX allow keyboard input
+    XX if you type a letter between A and G then render than chord and begin listening
+    XX listen for b,#,m,7,dim,etc and redraw the chord as you type
     - need to set focus when page loads to accept input
 - solve the problem of accidentals having two labes (D#/Eb)
+    XX FIXED FOR PICKING CHORD OR KEYING-IN chords
+    - would still like to show the proper accidental names based on the chord (if chord flat name notes as flats. If chord sharp name notes as sharp)
 - Move the currentChord output to somewhere contained in the fretboard disply itself
 - make separate methods for:
-    - shoing all notes in a chord
+    - showing all notes in a chord
     - looping over chords
     - show a specific chord 
     - loop over specific chords
     
 - write documentation
 - use keybpard arrows to move through given chords. I can change the highLightChord function to take an array
-- make it so the fretboard you want to interact with needs to be selected fo keyboard input
+- make it so the fretboard you want to interact with needs to be selected for keyboard input
 - add UI controls
-    - start/stop playback
-    - clear
-    - forward/backg
-    - show what chord is highlighted
-    - show the pulse of the beat (maybe play a sound)
+    XX start/stop playback
+    XX clear
+    XX forward/backg
+    XX show what chord is highlighted
+    XX show the pulse of the beat (maybe play a sound). Set a transition and apply that class with every beat
 - prev() and next() are based on beats not chords. These shouls be adjusted to move to the next and previous chord
-
+- put error catching in getNotesInChord
+- getNotesInChord.js aNotes doesn't need to be more than 12 tones if you use the modulus like you do in the rest of the code
+XX dynamically add the main 'fretboard' class to the div defined by the user - maybe call it something they wouldn't name something on their page "_gf_fretboard"
+- give feedback if given fretboard div doesn't exist
+- integrate the buttons
+XX create different color pallets. Use an additional class name on the main div to differentiate the styles
 
     BUGS:
     - layering chords onto one another causes the new dots to be large
-    - XX Dots on first string don't line up
+    XX Dots on first string don't line up
     - modifier keys are either clearing dots or control registers as "C" and delete registers as "D"
     - The size of the UL background is all out of wack
-    - number of frets constructor not working
+    XX number of frets constructor not working
+    - prev() next() keyboard inputs not working
+    - setup strings error if not caps eadgbe
+    - clicking on the fretboard clears all notes on all strings
+    - shouldn't resize with browser
+    - pressing 'm' removed root note after timeout
+    - the reason it takes up the whole width is because ULs are block elements
+
 
 
    
@@ -86,3 +108,5 @@ X clicking on a note can clear all other notes on the same string. This would al
         
     }
 
+CSS POSITIONING FOR FretMarker
+- make entire fretboard position relative then make it's child, fretMarker absolutely positioned as a percentage

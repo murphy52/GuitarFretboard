@@ -1,124 +1,203 @@
-.fretboard {
-    margin: 10px;
+
+._gf_fretboard {
+    margin: 15px;
     padding: 6px;
-}
-.fretboard ul{
-    margin: 0;
-    padding: 0; 
-    display:flex; 
+    position:relative;
+    --display: table;
+    --border:1px solid black;
+    --fretboardBG: rgb(82, 73, 75);
+    --fretmarkerOpacity: .1;
+    --hilightNoteBorder: 1px solid black;
+    --hilightNoteRadius: 40%;
+    --root: #8A9BA7;
+    --third: #B7EAF7;
+    --fifth: #E3BFB7;
+    --seventh: #FFE4C9;
 }
 
-.fretboard li{
-    display: inline-block;
+/* Themes */
+.bright {
+    --fretboardBG: sandybrown;
+    --hilightNoteBorder: 1px solid white;
+    --fretmarkerOpacity: .3;
+    --hilightNoteRadius: 50%;
+    --root: blue;
+    --third: green;
+    --fifth: red;
+    --seventh: tan;
+    --ninth: purple;
+}
+.simple {
+    --fretboardBG: transparent;
+    --hilightNoteBorder: 1px solid black;
+    --fretmarkerOpacity: 0;
+    --hilightNoteRadius: 50%;
+    --root: transparent;
+    --third: transparent;
+    --fifth: transparent;
+    --seventh: transparent;
+    --ninth: transparent;
+}
+
+._gf_fretboard ._fretboard{
+    --position:relative;
+    display: table;
+}
+._gf_fretboard ul{
+    margin: 0;
+    padding: 0; 
+    display: flex; 
+}
+._gf_fretboard li{
     position: relative;
     list-style: none;
     height: 2em;
     width: 5em;
-    border-right: 1px solid;
-    border-bottom: 1px solid;
-    background: repeating-linear-gradient(to left, #000000, #999999 0.5em, sandybrown 0.5em,sandybrown 20em);
+    border-right: none;
+    border-bottom: 1px solid #000000;
+    background: repeating-linear-gradient(to left, #443333, #888888 0.37em, var(--fretboardBG) 0.35em,var(--fretboardBG) 20em);
 }
-.fretboard li:hover::after {
+._gf_fretboard li:hover::after {
     content: attr(data-note);
     color:#666666;
+    left:calc(50% - 1em);
+    bottom:0%;
+    position:absolute;
   }
 
-/*this could be a gradient for the nut*/
-.fretboard li:nth-child(2){
+._gf_fretboard li:nth-child(2){
     border-left: 1.25em solid #333333;
 }
-
-.fretboard li:first-child {
-    background: sandybrown;
-    width: 1.25em
+/* fret before the nut */
+._gf_fretboard li:first-child {
+    background: var(--fretboardBG);
+    width: 1.25em;
 }
-
-.fretboard ul:first-child li{
+/* first string BG */ /* I don't like that these are nth-child(3) */
+._gf_fretboard ._fretboard ul:first-child li{
     background: none;
-    border:none;
     display: flex !important;
-    border-left:1px solid transparent;
  } 
-
- .fretboard ul:first-child li:nth-child(2){
+ ._gf_fretboard ._fretboard ul:first-child li:nth-child(2){
     border-left: 1.25em solid transparent;
-   
 }
 
-
-/* circles */
-.fretboard li span {
+/* fret markers */
+._gf_fretboard li .fretMarker {
     position: absolute;
-    top: 50%;
-    left: .6em;
+    left: calc(50% - .7em);
     border: 1px solid white;
-    font-family: sans-serif;
+    background-color: white;
     font-size: 1.65em;
-    opacity: .85;
-    text-align: center;
     border-radius: 50%;
     width: 1.1em;
     height: 1.1em;
-    z-index: 3;
-    
+    opacity: var(--fretmarkerOpacity);
+    z-index: 1;
+}
+._gf_fretboard [data-fret="12"] .fretMarker:first-of-type,._gf_fretboard [data-fret="24"] .fretMarker:first-of-type {
+    top:-45px;
+}
+._gf_fretboard  [data-fret="12"] .fretMarker:last-of-type,._gf_fretboard  [data-fret="24"] .fretMarker:last-of-type {
+    top:45px;
 }
 
-/* Circles on open strings */
-.fretboard li:first-child span {
+
+/* note highlight circles */
+._gf_fretboard li span {
     position: absolute;
-    top: 0.6em;
-    left: -.6em;
+    top: 50%; 
+    left: calc(50% - .7em);
+    border: var(--hilightNoteBorder);
+    font-family: sans-serif;
+    font-size: 1.65em;
+    text-align: center;
+    border-radius: var(--hilightNoteRadius);
+    width: 1.15em;
+    height: 1.15em;
     z-index: 3;
 }
-
-.fretboard li span:hover::after {
+/* on open strings */
+._gf_fretboard li:first-child span {
+    position: absolute;
+    left: -.6em;
+}
+._gf_fretboard li span:hover::after {
     content: attr(data-interval);
     color:white;
     font-size: .5em;
     align-content: center;
   }
 
-  .fretboard .root{
-    background-color: blue;
-    opacity: .8;
+/* interval colors */
+._gf_fretboard .root{
+    background-color: var(--root);
+    opacity: 1;
 }
-.fretboard .second{
+._gf_fretboard .second{
     background-color: rgb(208, 255, 0);
     opacity: .8;
 }
-.fretboard .third{
-    background-color: red;
-    opacity: .8;
+._gf_fretboard .third{
+    background-color: var(--third);
+    opacity: 1;
 }
-.fretboard .fourth{
+._gf_fretboard .fourth{
     background-color: rgb(247, 0, 255);
     opacity: .8;
 }
-.fretboard .fifth{
-    background-color: green;
-    opacity: .8;
+._gf_fretboard .fifth{
+    background-color: var(--fifth);
+    opacity: 1;
 }
-.fretboard .sixth{
+._gf_fretboard .sixth{
     background-color: rgb(255, 136, 0);
     opacity: .8;
 }
-.fretboard .seventh{
-    background-color: tan;
+._gf_fretboard .seventh{
+    background-color: var(--seventh);
     opacity: .8;
 }
 
+._gf_fretboard #_gf_controls{
+    padding:5px;
+    padding-top: 20px;
+    margin:auto;
+    text-align: center;
+}
 
+._gf_fretboard #_output{
+    position: absolute;
+    width:100%;
+    padding:5px;
+    top:2.15em;
+    height:50px;
+    text-align: center;
+    font-family: serif;
+    font-size: 1.65em;
+    --border:1px solid green;
+   
+}
+
+._gf_fretboard #_beatMarker{
+    position: relative;
+    display:table;
+    padding-bottom: 4px;
+    top: 45px;
+    text-align: center;
+    font-family: serif;
+    height:10px;
+    font-size: 3em;
+    --border:1px solid black;
+}
 .beatMarkerOff{
-    width: 100px;
-    height: 50px;
-    font-size: 2em;
     background-color:transparent;
     opacity: 1;
     transition: 0.4s;
 }
 .beatMarker{
-    width: 100px;
-    height: 50px;
     opacity: 0;
     background-color: red;
 }
+
+

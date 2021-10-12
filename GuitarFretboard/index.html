@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Guitar Chord Highlighter</title>
+  <meta name="description" content="Guitar Chord Highlighter">
+  <link rel=”favicon” type=”image/png” href=”/favicon.ico” />
+  <link rel="stylesheet" href="css/fretboard.css">
+  <script type="text/javascript" src="js/guitar.js"></script>
+  <script type="text/javascript" src="js/getNotesInChord.js"></script>
+  <script type="text/javascript" src="js/keyboardCommands.js"></script>
+
+</head>
+
+<body>
+ 
+  <div id='fretboard' class='fretboard'></div>
+  <div id='fretboard2' class='fretboard'></div>
+
+  <button id="previous" onclick="fretboard.prev()">Prev</button>
+  <button id="stop" onclick="fretboard.stop()">Stop</button>
+  <button id="play" onclick="fretboard.play()">play</button>
+  <button id="pause" onclick="fretboard.pause()">Pause</button>
+  <button id="next"onclick="fretboard.next()">Next</button>
+  <button id="clear" onclick="fretboard.clear()">Clear</button>
+  <div id='currentChord' class='currentChord'></div>
+  <div id="beatMarker"></div>
+</p>
+
+  
+
+  <script>
+
+
+
+  const fretboard = new Fretboard("fretboard", ['E', 'A', 'D', 'G','B','E'], 12);
+  
+  fretboard.playChords(["Am:6","C:6","F:6","G:6"],100)
+  
+  listenToKeyPress(fretboard);
+
+  </script>
+</body>
+
+</html>

@@ -14,18 +14,15 @@
 </head>
 
 <body>
- 
-  <div id='fretboard' class='fretboard'></div>
-  <div id='fretboard2' class='fretboard'></div>
 
-  <button id="previous" onclick="fretboard.prev()">Prev</button>
-  <button id="stop" onclick="fretboard.stop()">Stop</button>
-  <button id="play" onclick="fretboard.play()">play</button>
-  <button id="pause" onclick="fretboard.pause()">Pause</button>
-  <button id="next"onclick="fretboard.next()">Next</button>
-  <button id="clear" onclick="fretboard.clear()">Clear</button>
-  <div id='currentChord' class='currentChord'></div>
-  <div id="beatMarker"></div>
+  <div id='fretboard' class="bright"></div><p  style="display:block;"/>
+
+
+  <div id='fretboard2'></div><p style="display:block;"></p>
+  <div id='fretboard3' class="simple"></div></br>
+  <div id='fretboard4'></div></br>
+  <div id='fretboard5'></div></br>
+  <div id='fretboard6'></div></br>
 </p>
 
   
@@ -36,9 +33,21 @@
 
   const fretboard = new Fretboard("fretboard", ['E', 'A', 'D', 'G','B','E'], 12);
   
-  fretboard.playChords(["Am:6","C:6","F:6","G:6"],100)
+  fretboard.playChords(["D#"],1)
   
-  listenToKeyPress(fretboard);
+
+
+  const fretboard2 = new Fretboard("fretboard2", ['B','E', 'A', 'D', 'G','C'], 15);
+  const fretboard3 = new Fretboard("fretboard3", ['E', 'A', 'D', 'G','B','E'], 6);
+  const fretboard4 = new Fretboard("fretboard4", ['B','E', 'A', 'D'], 12);
+  const fretboard5 = new Fretboard("fretboard5", ['E','A', 'D'], 10);
+  const fretboard6 = new Fretboard("fretboard6", ['B','E', 'A', 'D', 'G','C'], 9);
+
+  fretboard3.playChords(["Am:6","C:6","F:6","G:6"],100)
+
+  listenToKeyPress(fretboard5);
+  listenToKeyPress(fretboard2);
+  listenToKeyPress(fretboard3);
 
   </script>
 </body>
