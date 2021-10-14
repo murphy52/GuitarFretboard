@@ -224,7 +224,7 @@ class Fretboard {
         }.stop()">Stop</button>
             <button id="play" onclick="${
             this.id
-        }.play()">play</button>
+        }.play()">Play</button>
             <button id="pause" onclick="${
             this.id
         }.pause()">Pause</button>
