@@ -1,10 +1,9 @@
 
 ._gf_fretboard {
-    margin-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 10px;
     position:relative;
     float:left;
+    margin-left: 10px;
+    padding: 10px;
     --fretboardBG: rgb(82, 73, 75);
     --fretmarkerOpacity: .1;
     --hilightNoteBorder: 1px solid black;
@@ -183,23 +182,20 @@
     position:absolute;
     width:100%;
     margin:auto;
-    top:20px;
+    top: -1px;
     text-align: center;
-    padding-bottom:0px;
     font-family: serif;
     font-size: 1.65em;
     z-index: 5;
 }
 
 ._gf_fretboard #_beatMarker{
-    --position:absolute;
-    --width:100%;
-    margin:auto;
-    padding-bottom: 7px;
+    position:absolute;
+    width:100%;
+    top:10px;
     text-align: left;
     font-family: serif;
-    height:22px;
-    font-size: 3em;
+    font-size: 1em;
 }
 .beatMarkerOff{
     background-color:transparent;

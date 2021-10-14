@@ -147,9 +147,9 @@ class Fretboard {
         this.hilightNotes(getNotesInChord(chord));
         this.beatMarkerPulse();
         if (this.parentElement.querySelector('#_output').innerText == chord) {
-            this.parentElement.querySelector('#_beatMarker').innerText = this.parentElement.querySelector('#_beatMarker').innerText + '.';
+            this.parentElement.querySelector('#_beatMarker').innerHTML = this.parentElement.querySelector('#_beatMarker').innerHTML +  "&#x25CB; &nbsp;";
         } else {
-            this.parentElement.querySelector('#_beatMarker').innerText = '.';
+            this.parentElement.querySelector('#_beatMarker').innerHTML = "&#x25CB; &nbsp;";
 
         }
         this.beatMarkerPulse();
@@ -224,7 +224,7 @@ class Fretboard {
         }.stop()">Stop</button>
             <button id="play" onclick="${
             this.id
-        }.play()">play</button>
+        }.play()">Play</button>
             <button id="pause" onclick="${
             this.id
         }.pause()">Pause</button>
