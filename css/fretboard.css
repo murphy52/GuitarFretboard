@@ -59,7 +59,10 @@
 }
 ._gf_fretboard li:hover::after {
     content: attr(data-note);
-    color:#666666;
+    background: var( --fretboardBG);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+    filter: invert(1) grayscale(1) contrast(9);
     left:calc(50% - 1em);
     bottom:0%;
     position:absolute;

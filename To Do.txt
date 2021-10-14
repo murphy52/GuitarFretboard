@@ -8,14 +8,8 @@ XX move indicator further to the left for open strings
 X clicking on a note can clear all other notes on the same string. This would allow you to visualize playable chords. You could create alternate tunings and find cool voicings. You could find great open voicings
     X clicking it a second time will remove it as well
 XX reset() just clears all span tags on fretboard
-
-
-
-
-- add a gradient to the nut
-- try different wood colors. Maybe add a subtle wood grain
-- add fret dots
-- slowly fade-in next chord tones so player can see whats coming
+-XX add fret dots
+- x slowly fade-in next chord tones so player can see whats coming
 - Functionality
     1. XX Build a fretboard of any tuning, number of strings, and number of frets
     2. XX be able to highlight all the chord tones for a given chord anywhere on the fret
@@ -24,9 +18,9 @@ XX reset() just clears all span tags on fretboard
 
     XX make clearString() it's own function so it can be used with the addEventListener button click or without
 
-- show the chords you are looping over and highlight them, and their beats, when you get to them [A] [D] [G] [F#m]
-    - loop over given chords and output them in their own divs
-- toggle note names on/off
+- x show the chords you are looping over and highlight them, and their beats, when you get to them [A] [D] [G] [F#m]
+    - x loop over given chords and output them in their own divs
+- X toggle note names on/off
 XX allow keyboard input
     XX if you type a letter between A and G then render than chord and begin listening
     XX listen for b,#,m,7,dim,etc and redraw the chord as you type
