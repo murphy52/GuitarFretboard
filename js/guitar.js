@@ -144,19 +144,19 @@ class Fretboard {
     }
 
     highlightChord(chord) {
-        this.hilightNotes(getNotesInChord(chord));
+        this.highlightNotes(getNotesInChord(chord));
         this.beatMarkerPulse();
         if (this.parentElement.querySelector('#_output').innerText == chord) {
-            this.parentElement.querySelector('#_beatMarker').innerHTML = this.parentElement.querySelector('#_beatMarker').innerHTML +  "&#x25CB; &nbsp;";
+            this.parentElement.querySelector('#_beatMarker').innerHTML = this.parentElement.querySelector('#_beatMarker').innerHTML +  "&#9676;";
         } else {
-            this.parentElement.querySelector('#_beatMarker').innerHTML = "&#x25CB; &nbsp;";
+            this.parentElement.querySelector('#_beatMarker').innerHTML = "&#9676;";
 
         }
         this.beatMarkerPulse();
         this.parentElement.querySelector('#_output').innerText = chord;
     }
 
-    hilightNotes(aNotes) {
+    highlightNotes(aNotes) {
         const classNames = ['root', 'third', 'fifth', 'seventh'];
         const intervals = [1, 3, 5, 7];
         this.removeNoteHighlights();

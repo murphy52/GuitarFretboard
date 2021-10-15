@@ -192,7 +192,7 @@
 ._gf_fretboard #_beatMarker{
     position:absolute;
     width:100%;
-    top:10px;
+    top:-5px;
     text-align: left;
     font-family: serif;
     font-size: 1em;
