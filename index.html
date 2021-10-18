@@ -30,7 +30,7 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptat
   molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
 
   <div id='fretboard4' class="navy" ></div>
-  <div id='fretboard5' class="navy" ></div>
+  <div id='fretboard5' class="bright" ></div>
   distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
   molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
   distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
@@ -79,19 +79,19 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptat
 
 
   // const fretboard2 = new Fretboard("fretboard2", ['B','E', 'A', 'D', 'G','C'], 15);
-  const fretboard3 = new Fretboard("fretboard3", ['E', 'A', 'D', 'G','B','E'], 6);
-  const fretboard4 = new Fretboard("fretboard4", ['B','E', 'A', 'D'], 6);
+  const fretboard3 = new Fretboard("fretboard3", ['E', 'A', 'D', 'G','B','E'], 12);
+  const fretboard4 = new Fretboard("fretboard4", ['E','A', 'D', 'G','B','E'], 12);
   const fretboard5 = new Fretboard("fretboard5", ['E','A', 'D','G'], 6);
   // const fretboard6 = new Fretboard("fretboard6", ['B','E', 'A', 'D', 'G','C'], 9);
 
-  fretboard3.playChords(["Am:6","C:6","F:6","G:6"],100)
-  fretboard4.playChords(["D:4","E:4","A:8"],120)
-  fretboard5.playChords(["D:4","E:4","A:8"],120)
+  fretboard5.playChords(["D","E","A:8"],250)
+  fretboard4.playChords(["C7:4","F7:2","C7:2","G7:1","F7:1","C7:1","G7:1"],20)
+  fretboard3.highlightChord("F7");
 
   // listenToKeyPress(fretboard5);
   // listenToKeyPress(fretboard2);
   listenToKeyPress(fretboard3);
-
+  
   </script>
 </body>
 

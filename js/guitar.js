@@ -63,6 +63,9 @@ class Fretboard {
         node2.setAttribute('id', '_output');
         this.parentElement.prepend(node2);
 
+        var node3 = document.createElement('div');
+        node3.setAttribute('id', '_beatMarker');
+        this.parentElement.prepend(node3);
 
         this.initFrets();
         this.applyNoteMap(this.noteMap);
@@ -91,18 +94,7 @@ class Fretboard {
                 this.frets[i].strings[j].element.setAttribute('data-fret', j);
                 this.frets[i].strings[j].element.setAttribute('data-note', noteMap[i][j]);
                 // add fret markers
-                if ([
-                    3,
-                    5,
-                    7,
-                    9,
-                    12,
-                    15,
-                    17,
-                    19,
-                    21,
-                    24
-                ].includes(j) && i == Math.floor(this.tuning.length / 2)) {
+                if ([3,5,7,9,12,15,17,19,21,24].includes(j) && i == Math.floor(this.tuning.length / 2)) {
                     var node = document.createElement("div");
                     node.classList.add("fretMarker");
                     this.frets[i].strings[j].element.appendChild(node);
@@ -166,13 +158,14 @@ class Fretboard {
             var matches = this.element.querySelectorAll(dataString);
 
             for (let j = 0; j < matches.length; j++) {
-                var node = document.createElement("span");
-                node.classList.add(classNames[i]);
-                node.setAttribute('data-note', aNotes[i]);
-                node.setAttribute('data-interval', intervals[i]);
+                this.highlightNote(matches[j],aNotes[i],intervals[i]);
+                // var node = document.createElement("span");
+                // node.classList.add(classNames[i]);
+                // node.setAttribute('data-note', aNotes[i]);
+                // node.setAttribute('data-interval', intervals[i]);
 
-                matches[j].appendChild(node);
-                node.addEventListener("click", this.selectNote);
+                // matches[j].appendChild(node);
+                // node.addEventListener("click", this.selectNote);
             }
         }
     }
@@ -185,6 +178,22 @@ class Fretboard {
         }
     }
 
+    highlightNote(element,note,interval){
+        const classNames = ['root', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'octave', 'ninth', 'third', 'eleventh', 'fifth', 'thirteenth'];
+        const node = document.createElement("span");
+        node.classList.add(classNames[interval-1]);
+        node.setAttribute('data-note', note);
+        node.setAttribute('data-interval', interval);
+
+        element.appendChild(node);
+        node.addEventListener("click", this.selectNote);
+    }
+
+    highlightChordFingering(fingering){
+        //check that fingering array length matches fretboard tuning
+        //invert the array to match tuning
+        //create a function that will encapsulate highlighting a single note
+    }
     // ************************* */
     nextChord() {
         this.playChords.currentChordIndex = (this.playChords.currentChordIndex + 1) % this.playChords.aChords.length;
@@ -192,6 +201,8 @@ class Fretboard {
     previousChord() {
         this.playChords.currentChordIndex = (this.playChords.currentChordIndex - 1 + this.playChords.aChords.length) % this.playChords.aChords.length;
     }
+    nextBeat(){}
+    previousBeat(){}
 
     playCurrentChord() {
         this.highlightChord(this.playChords.getCurrentChord());
@@ -204,9 +215,6 @@ class Fretboard {
         if (chords.length > 1) {
             this.insertControls()
         }
-        var node = document.createElement('div');
-        node.setAttribute('id', '_beatMarker');
-        this.parentElement.prepend(node);
 
         this.playCurrentChord();
     }
@@ -216,24 +224,12 @@ class Fretboard {
         var node = document.createElement('div');
         node.setAttribute('id', '_gf_controls')
         node.innerHTML = `
-            <button id="previous" onclick="${
-            this.id
-        }.prev()">Prev</button>
-            <button id="stop" onclick="${
-            this.id
-        }.stop()">Stop</button>
-            <button id="play" onclick="${
-            this.id
-        }.play()">Play</button>
-            <button id="pause" onclick="${
-            this.id
-        }.pause()">Pause</button>
-            <button id="next"onclick="${
-            this.id
-        }.next()">Next</button>
-            <button id="clear" onclick="${
-            this.id
-        }.clear()">Clear</button>
+            <button id="previous" onclick="${this.id}.prev()">Prev</button>
+            <button id="stop" onclick="${this.id}.stop()">Stop</button>
+            <button id="play" onclick="${this.id}.play()">Play</button>
+            <button id="pause" onclick="${this.id}.pause()">Pause</button>
+            <button id="next"onclick="${this.id}.next()">Next</button>
+            <button id="clear" onclick="${this.id}.clear()">Clear</button>
         `;
         this.element.appendChild(node);
     }
@@ -276,18 +272,7 @@ class NoteMap {
     constructor(aTuning, numberOfFrets) {
         this.aStrings = [];
         this.aAllMusicNotes = [
-            'A',
-            'Bb',
-            'B',
-            'C',
-            'C#',
-            'D',
-            'Eb',
-            'E',
-            'F',
-            'F#',
-            'G',
-            'G#'
+            'A','Bb','B','C','C#','D','Eb','E','F','F#','G','G#'
         ];
         this.aTuning = aTuning.reverse();
         this.numberOfFrets = numberOfFrets + 1;
@@ -316,7 +301,7 @@ class PlayChords {
     constructor(chords, bpm) {
         this.currentChordIndex = 0;
         this.currentChord;
-        this.currentChordBeatCount;
+        this.currentBeatIndex;
         this.aChords = [];
         this.aBeats = [];
         this.beatLen = 60000 / bpm;
@@ -325,14 +310,15 @@ class PlayChords {
             var aChordBeat = chords[i].split(":");
 
             // aChords is 1 chord for each beat (4 beats if not specified)
-
             if (aChordBeat[1] != undefined) {
+                this.aBeats.push(aChordBeat[1]);
                 for (let j = 0; j < parseInt(aChordBeat[1]); j++) {
                     this.aChords.push(aChordBeat[0])
                 }
             } else {
+                this.aBeats.push(4);
                 for (let j = 0; j < 4; j++) {
-                    this.aChords.push(aChordBeat[0])
+                    this.aChords.push(aChordBeat[0]);
                 }
             }
         }
