@@ -135,7 +135,7 @@ class Fretboard {
         }
     }
 
-    highlightChord(chord) {
+    highlightChord(chord) { //refactor: this should be called highlightChordTones
         this.highlightNotes(getNotesInChord(chord));
         this.beatMarkerPulse();
         if (this.parentElement.querySelector('#_output').innerText == chord) {
@@ -146,6 +146,42 @@ class Fretboard {
         }
         this.beatMarkerPulse();
         this.parentElement.querySelector('#_output').innerText = chord;
+    }
+
+    highlightChordInPosition(chord, position){
+        const arrPos = position-1;
+        const positions = [0,4,7]; //positions 1,2,& 3
+        const positionLen = 5; //each position is 5 frets from start
+        const notes = getNotesInChord(chord);
+        const rootNote = notes[0];
+        const adjustedNotes = [notes[2],notes[1],notes[3],notes[0]];
+        const frets = this.frets.reverse(); //flip strings (frets) so lowest notes are first
+        const truncatedFrets = [];
+        frets.forEach(item => {
+            truncatedFrets.push(item.strings.slice(positions[arrPos][0],positionLen));
+        });
+
+        var rootNoteFound = 0;
+        for (let j = 0; j < truncatedFrets.length; j++) {
+            var foundOnString = 0;
+            for (let l = 0; l < adjustedNotes.length; l++) {
+                for (let k = 0; k < truncatedFrets[j].length; k++) {
+                    if (rootNoteFound && truncatedFrets[j][k].element.getAttribute('data-note') == adjustedNotes[l]){
+                        this.highlightNote(truncatedFrets[j][k].element);
+                        console.log(truncatedFrets[j][k]);
+                        foundOnString = 1;
+                        break;
+                    }
+                    if (!rootNoteFound && truncatedFrets[j][k].element.getAttribute('data-note') == rootNote){
+                        this.highlightNote(truncatedFrets[j][k].element);
+                        foundOnString = 1;
+                        rootNoteFound = 1;
+                        break;
+                    }
+                }
+                if(foundOnString){break}
+            }
+        }
     }
 
     highlightNotes(aNotes) {

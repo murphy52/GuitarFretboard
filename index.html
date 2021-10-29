@@ -85,9 +85,11 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptat
   // const fretboard6 = new Fretboard("fretboard6", ['B','E', 'A', 'D', 'G','C'], 9);
 
   fretboard5.playChords(["D","E","A:8"],250)
-  fretboard4.playChords(["C7:4","F7:2","C7:2","G7:1","F7:1","C7:1","G7:1"],20)
-  fretboard3.highlightChord("F7");
+ // fretboard4.playChords(["C7:4","F7:2","C7:2","G7:1","F7:1","C7:1","G7:1"],20)
+  fretboard3.highlightChord("A7");
 
+fretboard4.highlightChordInPosition('Dm7',1); 
+  
   // listenToKeyPress(fretboard5);
   // listenToKeyPress(fretboard2);
   listenToKeyPress(fretboard3);
@@ -96,3 +98,19 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptat
 </body>
 
 </html>
+
+loop over stings
+loop over frets
+loop over notes 
+
+keep track of which strings already have notes highlighted
+prefer 3rds to 5ths
+prefer 7ths to 5ths
+
+order preference - find root note first and skip strings until it is found
+then, starting on the next string, look in order of 3,7,1,5
+
+loop only searches for root note until rootNoteIsFound == 1, then loop over adjusted array
+adjustedNotes = 1,3,5,7 => 3,7,1,5   => 5,3,7,1   2130
+
+put root [0] at the end then move 5th [1] to the end
