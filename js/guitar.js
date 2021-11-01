@@ -152,9 +152,12 @@ class Fretboard {
         const arrPos = position-1;
         const positions = [0,4,7]; //positions 1,2,& 3
         const positionLen = 5; //each position is 5 frets from start
+        var lastNoteFound;
         const notes = getNotesInChord(chord);
-        const rootNote = notes[0];
-        const adjustedNotes = [notes[2],notes[1],notes[3],notes[0]];
+        var adjustedNotes = {
+            root: notes[0]
+        }
+
         const frets = this.frets.reverse(); //flip strings (frets) so lowest notes are first
         const truncatedFrets = [];
         frets.forEach(item => {
@@ -164,22 +167,47 @@ class Fretboard {
         var rootNoteFound = 0;
         for (let j = 0; j < truncatedFrets.length; j++) {
             var foundOnString = 0;
-            for (let l = 0; l < adjustedNotes.length; l++) {
+            for (const key in adjustedNotes) {
                 for (let k = 0; k < truncatedFrets[j].length; k++) {
-                    if (rootNoteFound && truncatedFrets[j][k].element.getAttribute('data-note') == adjustedNotes[l]){
+                    if (rootNoteFound && key != lastNoteFound && truncatedFrets[j][k].element.getAttribute('data-note') == adjustedNotes[key]){
                         this.highlightNote(truncatedFrets[j][k].element);
                         console.log(truncatedFrets[j][k]);
                         foundOnString = 1;
                         break;
                     }
-                    if (!rootNoteFound && truncatedFrets[j][k].element.getAttribute('data-note') == rootNote){
+                    if (!rootNoteFound && truncatedFrets[j][k].element.getAttribute('data-note') == adjustedNotes['root']){
                         this.highlightNote(truncatedFrets[j][k].element);
                         foundOnString = 1;
                         rootNoteFound = 1;
+                        adjustedNotes = {
+                            fifth: notes[2],
+                            third: notes[1],
+                            seventh: notes[3],
+                            root: notes[0]
+                        }
                         break;
                     }
                 }
-                if(foundOnString){break}
+                if(foundOnString){
+                    lastNoteFound = key;
+                    if (key == 'third'){
+                        adjustedNotes = {
+                            fifth: notes[2],
+                            seventh: notes[3],
+                            root: notes[0],
+                            third: notes[1],
+                        }
+                    }
+                    if (key == 'fifth'){
+                        adjustedNotes = {
+                            seventh: notes[3],
+                            root: notes[0],
+                            third: notes[1],
+                            fifth: notes[2]
+                        }
+                    }
+                    break;
+                }
             }
         }
     }
