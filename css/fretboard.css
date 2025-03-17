@@ -306,7 +306,7 @@
     font-family: sans-serif;
     font-size: 1em;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     gap: 5px;
 }
 
