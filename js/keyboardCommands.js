@@ -1,65 +1,143 @@
+/**
+ * Sets up keyboard event listeners for controlling the fretboard
+ * @param {Fretboard} fretboard - The fretboard instance to control
+ */
 function listenToKeyPress(fretboard) {
-    var root = '';
-    var accidental = '';
-    var quality = ''
-    var extension = '';
-    var alteredTones = '';
-    var timer;
+    let root = '';
+    let accidental = '';
+    let quality = '';
+    let extension = '';
+    let alteredTones = '';
+    let timer;
 
- document.addEventListener('keydown', function (event) {
-    //back and next
-    if (event.key == "ArrowLeft") {
-      // go to previous chord
-      
-    }
-    if (event.key == "ArrowLeft") {
-      // go to previous chord
-      
-    }
+    document.addEventListener('keydown', function(event) {
+        // Prevent default behavior for arrow keys to avoid page scrolling
+        if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", " "].includes(event.key)) {
+            event.preventDefault();
+        }
 
-    if (root.length){
-      if (event.key.match(/m/)) {
-        quality = event.key;
-        startTimer();
-      }
-      if (event.key.match(/7|9/)) {
-        extension = event.key;
-        startTimer();
-      }
-    }
-    if (root.length){
-      //accidental
-      if (event.key.match(/#|b/)) {
-        accidental = event.key;
-        startTimer();
-      }
-    } else{
-      //root
-      if (event.key.length == 1 && event.key.match(/[a-g]/i)) {
-          //clear previous chord and redraw new chord
-          root = event.key.toUpperCase();
-          startTimer();
-      }
-    }
+        // Skip if modifier keys are pressed (Control, Alt, Meta)
+        if (event.ctrlKey || event.altKey || event.metaKey) {
+            return;
+        }
 
-    var chord = root + accidental + quality + extension;
-    fretboard.highlightChord(chord);
-    
+        // Navigation controls
+        if (event.key === "ArrowLeft") {
+            // Go to previous chord
+            if (fretboard.playChords && typeof fretboard.previousChord === 'function') {
+                fretboard.previousChord();
+                if (typeof fretboard.playChords.getCurrentChord === 'function') {
+                    fretboard.highlightChordTones(fretboard.playChords.getCurrentChord());
+                }
+            }
+        } else if (event.key === "ArrowRight") {
+            // Go to next chord
+            if (fretboard.playChords && typeof fretboard.nextChord === 'function') {
+                fretboard.nextChord();
+                if (typeof fretboard.playChords.getCurrentChord === 'function') {
+                    fretboard.highlightChordTones(fretboard.playChords.getCurrentChord());
+                }
+            }
+        } else if (event.key === " ") {
+            // Space bar toggles play/pause
+            if (fretboard.timeout) {
+                clearTimeout(fretboard.timeout);
+                fretboard.timeout = null;
+            } else if (fretboard.playChords && typeof fretboard.playCurrentChord === 'function') {
+                fretboard.playCurrentChord();
+            }
+        } else if (event.key === "Escape") {
+            // Escape key clears the fretboard
+            fretboard.removeNoteHighlights();
+            if (fretboard.parentElement) {
+                const outputElement = fretboard.parentElement.querySelector('#_output');
+                const beatMarkerElement = fretboard.parentElement.querySelector('#_beatMarker');
+                if (outputElement) outputElement.innerText = '';
+                if (beatMarkerElement) beatMarkerElement.innerHTML = '';
+            }
+            resetChordInput();
+        } else if (event.key === "r" || event.key === "R") {
+            // 'r' key rotates the fretboard
+            fretboard.rotate();
+        } else if (event.key === "f" || event.key === "F") {
+            // 'f' key flips the fretboard
+            fretboard.flip();
+        } else {
+            // Chord building
+            handleChordInput(event);
+        }
     });
 
-    function startTimer(){
-      //document.getElementById('timer').innerText = '*';
-      if (timer){clearInterval(timer);}
-      timer = setTimeout(stopTimer,3000);
+    /**
+     * Handles keyboard input for building chords
+     * @param {KeyboardEvent} event - The keyboard event
+     */
+    function handleChordInput(event) {
+        if (root.length) {
+            // If we already have a root note, check for chord qualities
+            if (event.key.match(/m/i) && !quality) {
+                quality = 'm';
+                startTimer();
+            } else if (event.key.match(/a/i) && !quality) {
+                quality = 'aug';
+                startTimer();
+            } else if (event.key.match(/d/i) && !quality) {
+                quality = 'dim';
+                startTimer();
+            } else if (event.key.match(/s/i) && !quality) {
+                quality = 'sus';
+                startTimer();
+            } else if (event.key.match(/[0-9]/)) {
+                // Handle extensions (7, 9, etc.)
+                extension = event.key;
+                startTimer();
+            } else if (event.key.match(/#|b/) && !accidental) {
+                // Handle accidentals
+                accidental = event.key;
+                startTimer();
+            }
+        } else {
+            // If we don't have a root note yet, check for root notes (A-G)
+            if (event.key.length === 1 && event.key.match(/[a-g]/i)) {
+                // Clear previous chord and set new root
+                root = event.key.toUpperCase();
+                startTimer();
+            }
+        }
+
+        // Build the chord name and highlight it
+        const chord = root + accidental + quality + extension;
+        if (chord) {
+            fretboard.highlightChordTones(chord);
+        }
     }
-    function stopTimer(){
-      clearInterval(timer);
-      //document.getElementById('timer').innerText = '';
-      root = '';
-      accidental = '';
-      quality = ''
-      extension = '';
-      alteredTones = '';
-      //document.getElementById('output').innerText = '';
+
+    /**
+     * Starts or resets the timer for chord input
+     */
+    function startTimer() {
+        if (timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(resetChordInput, 3000);
     }
-  }
+
+    /**
+     * Resets all chord input variables
+     * Fix: Don't clear the root note when pressing 'm' key
+     */
+    function resetChordInput() {
+        clearTimeout(timer);
+        
+        // Only reset if we're not in the middle of chord building
+        // This prevents the root note from being removed when pressing 'm'
+        if (!quality && !extension && !alteredTones) {
+            root = '';
+        }
+        
+        accidental = '';
+        quality = '';
+        extension = '';
+        alteredTones = '';
+    }
+}

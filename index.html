@@ -3,114 +3,195 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Guitar Chord Highlighter</title>
-  <meta name="description" content="Guitar Chord Highlighter">
-  <link rel=”favicon” type=”image/png” href=”/favicon.ico” />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guitar Fretboard Visualization</title>
+  <meta name="description" content="A customizable guitar fretboard visualization tool for instructors and students">
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="stylesheet" href="css/fretboard.css">
-  <script type="text/javascript" src="js/guitar.js"></script>
   <script type="text/javascript" src="js/getNotesInChord.js"></script>
+  <script type="text/javascript" src="js/guitar.js"></script>
   <script type="text/javascript" src="js/keyboardCommands.js"></script>
-
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    
+    h1, h2, h3 {
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .demo-section {
+      margin-bottom: 40px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 5px;
+    }
+    
+    .controls {
+      margin: 20px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    .instructions {
+      background-color: #f9f9f9;
+      padding: 15px;
+      border-left: 4px solid #4CAF50;
+      margin-bottom: 20px;
+    }
+    
+    .keyboard-shortcuts {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .keyboard-shortcuts div {
+      padding: 5px;
+    }
+    
+    .keyboard-shortcuts div:nth-child(odd) {
+      font-weight: bold;
+      background-color: #f0f0f0;
+    }
+  </style>
+  <script>
+    // Declare global variables to ensure they're accessible before DOM is loaded
+    var standardGuitar;
+    var bassGuitar;
+    var chordPlayer;
+    var keyboardInteractive;
+  </script>
 </head>
 
 <body>
-
-  <!-- <div id='fretboard' class="navy"></div><p  style="display:block;"/> -->
-
-
-  <!-- <div id='fretboard2'></div> -->
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-
-  <div id='fretboard4' class="navy"></div>
-  <div id='fretboard5' class="bright" ></div>
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
- distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  <div id='fretboard3' class="simple" ></div>distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime minima voluptatum 
-  molestias ex perspiciatis non totam ut quaerat, fugiat similique id illum. Dolorum, sequi 
-  distinctio obcaecati dicta culpa temporibus! Libero?
-
-  <!-- <div id='fretboard4'></div></br>
-  <div id='fretboard5'></div></br>
-  <div id='fretboard6'></div></br> -->
-
-
-  
+  <div class="container">
+    <h1>Guitar Fretboard Visualization</h1>
+    
+    <div class="instructions">
+      <p>This tool provides interactive guitar fretboard visualizations for learning and teaching. Use the controls below to explore different features or try the keyboard shortcuts.</p>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Standard Guitar (6-string)</h2>
+      <p>A standard guitar fretboard with E A D G B E tuning. Try clicking on the highlighted notes or hovering over frets to see note names.</p>
+      
+      <div id='standard-guitar' class="navy"></div>
+      
+      <div class="controls">
+        <button onclick="standardGuitar.rotate()">Rotate Fretboard</button>
+        <button onclick="standardGuitar.flip()">Flip Fretboard</button>
+        <button onclick="standardGuitar.highlightChordTones('C')">Show C Major</button>
+        <button onclick="standardGuitar.highlightChordTones('Am')">Show A Minor</button>
+        <button onclick="standardGuitar.highlightChordTones('G7')">Show G7</button>
+        <button onclick="standardGuitar.highlightChordTones('Dmaj7')">Show Dmaj7</button>
+      </div>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Bass Guitar (4-string)</h2>
+      <p>A 4-string bass guitar fretboard with E A D G tuning.</p>
+      
+      <div id='bass-guitar' class="bright"></div>
+      
+      <div class="controls">
+        <button onclick="bassGuitar.rotate()">Rotate Fretboard</button>
+        <button onclick="bassGuitar.flip()">Flip Fretboard</button>
+        <button onclick="bassGuitar.highlightChordTones('C')">Show C Major</button>
+        <button onclick="bassGuitar.highlightChordTones('Am')">Show A Minor</button>
+      </div>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Chord Progression Player</h2>
+      <p>This example demonstrates playing through a chord progression with timing.</p>
+      
+      <div id='chord-player' class="navy"></div>
+      
+      <div class="controls">
+        <button onclick="chordPlayer.playChords(['C:2', 'G:2', 'Am:2', 'F:2'], 120, true)">Play C-G-Am-F with Metronome</button>
+        <button onclick="chordPlayer.playChords(['G:4', 'Em:4', 'C:4', 'D:4'], 100, true)">Play G-Em-C-D with Metronome</button>
+        <button onclick="chordPlayer.playChords(['Dm7:2', 'G7:2', 'Cmaj7:4'], 80, true)">Play II-V-I Jazz with Metronome</button>
+        <button onclick="chordPlayer.playChords(['C:2', 'G:2', 'Am:2', 'F:2'], 120, false)">Play C-G-Am-F (No Metronome)</button>
+        <button onclick="chordPlayer.playChords(['G:4', 'Em:4', 'C:4', 'D:4'], 100, false)">Play G-Em-C-D (No Metronome)</button>
+        <button onclick="chordPlayer.playChords(['Dm7:2', 'G7:2', 'Cmaj7:4'], 80, false)">Play II-V-I Jazz (No Metronome)</button>
+      </div>
+    </div>
+    
+    <div class="demo-section">
+      <h2>Keyboard Interactive</h2>
+      <p>This fretboard responds to keyboard input. Click on it first to give it focus, then try these shortcuts:</p>
+      
+      <div class="keyboard-shortcuts">
+        <div>A-G keys:</div><div>Set root note (e.g., press 'C' for C chord)</div>
+        <div>m key:</div><div>Add minor quality (e.g., 'C' then 'm' for Cm)</div>
+        <div>7, 9 keys:</div><div>Add extensions (e.g., 'C' then '7' for C7)</div>
+        <div># or b keys:</div><div>Add accidentals (e.g., 'F' then '#' for F#)</div>
+        <div>Arrow keys:</div><div>Navigate through chord progression</div>
+        <div>Space:</div><div>Toggle play/pause</div>
+        <div>Escape:</div><div>Clear the fretboard</div>
+        <div>R key:</div><div>Rotate the fretboard</div>
+        <div>F key:</div><div>Flip the fretboard</div>
+      </div>
+      
+      <div id='keyboard-interactive' class="simple" tabindex="0"></div>
+    </div>
+  </div>
 
   <script>
-
-
-
-  // const fretboard = new Fretboard("fretboard", ['E', 'A', 'D', 'G','B','E'], 12);
-  
-  // fretboard.playChords(["Gm7"],1)
-  
-
-
-  // const fretboard2 = new Fretboard("fretboard2", ['B','E', 'A', 'D', 'G','C'], 15);
-  const fretboard3 = new Fretboard("fretboard3", ['E', 'A', 'D', 'G','B','E'], 12);
-  const fretboard4 = new Fretboard("fretboard4", ['E','A', 'D', 'G','B','E'], 12);
-  const fretboard5 = new Fretboard("fretboard5", ['E','A', 'D','G'], 6);
-  // const fretboard6 = new Fretboard("fretboard6", ['B','E', 'A', 'D', 'G','C'], 9);
-
-  fretboard5.playChords(["D","E","A:8"],250)
- // fretboard4.playChords(["C7:4","F7:2","C7:2","G7:1","F7:1","C7:1","G7:1"],20)
-  fretboard3.highlightChord("A7");
-
-fretboard4.highlightChordInPosition('C',1); 
-  
-  // listenToKeyPress(fretboard5);
-  // listenToKeyPress(fretboard2);
-  listenToKeyPress(fretboard3);
-  
+    // Initialize the fretboards when the page is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Standard guitar
+      standardGuitar = new Fretboard("standard-guitar", ['E', 'A', 'D', 'G', 'B', 'E'], 7);
+      standardGuitar.highlightChordTones("C");
+      
+      // Bass guitar
+      bassGuitar = new Fretboard("bass-guitar", ['E', 'A', 'D', 'G'], 12);
+      bassGuitar.highlightChordTones("A");
+      
+      // Chord player
+      chordPlayer = new Fretboard("chord-player", ['E', 'A', 'D', 'G', 'B', 'E'], 12);
+      
+      // Keyboard interactive
+      keyboardInteractive = new Fretboard("keyboard-interactive", ['E', 'A', 'D', 'G', 'B', 'E'], 12);
+      listenToKeyPress(keyboardInteractive);
+      
+      // Fix: Set focus to keyboard interactive fretboard when page loads
+      const keyboardInteractiveElement = document.getElementById('keyboard-interactive');
+      if (keyboardInteractiveElement) {
+        keyboardInteractiveElement.focus();
+      }
+    });
   </script>
 </body>
 
 </html>
-
-loop over stings
-loop over frets
-loop over notes 
-
-keep track of which strings already have notes highlighted
-prefer 3rds to 5ths
-prefer 7ths to 5ths
-
-order preference - find root note first and skip strings until it is found
-then, starting on the next string, look in order of 3,7,1,5
-
-loop only searches for root note until rootNoteIsFound == 1, then loop over adjusted array
-adjustedNotes = 1,3,5,7 => 3,7,1,5   => 5,3,7,1   2130
-
-put root [0] at the end then move 5th [1] to the end
