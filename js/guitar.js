@@ -378,6 +378,11 @@ class Fretboard {
     }
 
     playChords(chords, bpm, enableMetronome = false) {
+        // Stop any currently playing chord sequence
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+            this.timeout = null;
+        }
         // Fix: Rename the property to avoid overwriting the method
         this.chordSequence = new PlayChords(chords, bpm);
         this.enableMetronome = enableMetronome;
@@ -526,17 +531,32 @@ class Fretboard {
     // Method to rotate the fretboard for left-handed view
     rotate() {
         this.parentElement.classList.toggle('rotated');
-        // Reverse the strings order
-        this.strings.reverse();
-        this.updateStrings();
-        this.applyNoteMap(this.noteMap);
+        
+        // Only manipulate the DOM if we're not already rotated
+        // This prevents adding duplicate fretMarkers
+        if (this.isRotated === undefined || this.isRotated === false) {
+            // Reverse the strings order
+            this.strings.reverse();
+            this.updateStrings();
+            this.applyNoteMap(this.noteMap);
+            this.isRotated = true;
+        } else {
+            // If already rotated, just reverse back without re-applying markers
+            this.strings.reverse();
+            this.updateStrings();
+            this.isRotated = false;
+        }
     }
 
     // Method to flip the fretboard vertically
     flip() {
         this.parentElement.classList.toggle('flipped');
+        
+        // Don't modify the chord name display when flipping
+        // The original implementation was flipping the chord name as well
+        // which is incorrect behavior
     }
-}
+ }   
 
 /**
  * Maps notes to strings and frets

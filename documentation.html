@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuitarFretboard Library Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            margin-top: 30px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        code {
+            background-color: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .example {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .note {
+            background-color: #fffde7;
+            border-left: 4px solid #ffd600;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .keyboard-shortcut {
+            display: inline-block;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 2px 6px;
+            margin: 0 2px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>GuitarFretboard Library Documentation</h1>
+    
+    <p>
+        GuitarFretboard is a customizable guitar fretboard visualization tool that allows developers to create
+        interactive fretboard diagrams, display chord shapes, and play chord progressions.
+    </p>
+
+    <h2>Table of Contents</h2>
+    <ul>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#basic-usage">Basic Usage</a></li>
+        <li><a href="#api-reference">API Reference</a></li>
+        <li><a href="#chord-notation">Chord Notation</a></li>
+        <li><a href="#keyboard-shortcuts">Keyboard Shortcuts</a></li>
+        <li><a href="#examples">Examples</a></li>
+    </ul>
+
+    <h2 id="getting-started">Getting Started</h2>
+    <p>
+        To use the GuitarFretboard library, include the necessary JavaScript files in your HTML:
+    </p>
+    <pre><code>&lt;link rel="stylesheet" href="css/guitar.css"&gt;
+&lt;script src="js/getNotesInChord.js"&gt;&lt;/script&gt;
+&lt;script src="js/guitar.js"&gt;&lt;/script&gt;
+&lt;script src="js/keyboardCommands.js"&gt;&lt;/script&gt;</code></pre>
+
+    <p>
+        Then, create a container element in your HTML where the fretboard will be displayed:
+    </p>
+    <pre><code>&lt;div id="fretboard"&gt;&lt;/div&gt;</code></pre>
+
+    <h2 id="basic-usage">Basic Usage</h2>
+    <p>
+        Initialize a new fretboard with standard tuning and 24 frets:
+    </p>
+    <pre><code>const fretboard = new Fretboard("fretboard", ['E', 'A', 'D', 'G', 'B', 'E'], 24);</code></pre>
+
+    <p>
+        Display a chord on the fretboard:
+    </p>
+    <pre><code>fretboard.highlightChordTones("Cmaj7");</code></pre>
+
+    <p>
+        Play a chord progression:
+    </p>
+    <pre><code>fretboard.playChords(["G:4", "Bm", "C:8", "D:4"], 100);</code></pre>
+
+    <p>
+        Enable keyboard shortcuts:
+    </p>
+    <pre><code>listenToKeyPress(fretboard);</code></pre>
+
+    <div class="example">
+        <h3>Complete Example</h3>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Guitar Fretboard Example&lt;/title&gt;
+    &lt;link rel="stylesheet" href="css/guitar.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id="fretboard"&gt;&lt;/div&gt;
+
+    &lt;script src="js/getNotesInChord.js"&gt;&lt;/script&gt;
+    &lt;script src="js/guitar.js"&gt;&lt;/script&gt;
+    &lt;script src="js/keyboardCommands.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize fretboard with standard tuning and 24 frets
+            const fretboard = new Fretboard("fretboard", ['E', 'A', 'D', 'G', 'B', 'E'], 24);
+            
+            // Display a C major chord
+            fretboard.highlightChordTones("C");
+            
+            // Enable keyboard shortcuts
+            listenToKeyPress(fretboard);
+            
+            // Play a chord progression (G for 4 beats, Bm, C for 8 beats, D for 4 beats) at 100 BPM
+            // fretboard.playChords(["G:4", "Bm", "C:8", "D:4"], 100);
+        });
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+    </div>
+
+    <h2 id="api-reference">API Reference</h2>
+
+    <h3>Fretboard Constructor</h3>
+    <pre><code>new Fretboard(id, tuning, fretCount)</code></pre>
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>id</td>
+            <td>String</td>
+            <td>The ID of the HTML element where the fretboard will be displayed</td>
+        </tr>
+        <tr>
+            <td>tuning</td>
+            <td>Array</td>
+            <td>An array of strings representing the tuning of each string (e.g., ['E', 'A', 'D', 'G', 'B', 'E'])</td>
+        </tr>
+        <tr>
+            <td>fretCount</td>
+            <td>Number</td>
+            <td>The number of frets to display (maximum 32)</td>
+        </tr>
+    </table>
+
+    <h3>Methods</h3>
+
+    <h4>highlightChordTones(chord)</h4>
+    <p>Highlights the notes of a chord on the fretboard.</p>
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>chord</td>
+            <td>String</td>
+            <td>The chord name (e.g., "C", "Am", "G7", "Dmaj7")</td>
+        </tr>
+    </table>
+
+    <h4>highlightChordInPosition(chord, position)</h4>
+    <p>Highlights a chord in a specific position on the fretboard.</p>
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>chord</td>
+            <td>String</td>
+            <td>The chord name (e.g., "C", "Am", "G7", "Dmaj7")</td>
+        </tr>
+        <tr>
+            <td>position</td>
+            <td>Number</td>
+            <td>The position on the fretboard (1, 2, or 3)</td>
+        </tr>
+    </table>
+
+    <h4>playChords(chords, bpm, enableMetronome)</h4>
+    <p>Plays a sequence of chords at the specified tempo.</p>
+    <table>
+        <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>chords</td>
+            <td>Array</td>
+            <td>An array of chord strings, optionally with beat counts (e.g., ["G:4", "Bm", "C:8", "D:4"])</td>
+        </tr>
+        <tr>
+            <td>bpm</td>
+            <td>Number</td>
+            <td>The tempo in beats per minute</td>
+        </tr>
+        <tr>
+            <td>enableMetronome</td>
+            <td>Boolean</td>
+            <td>Whether to enable the metronome sound (default: false)</td>
+        </tr>
+    </table>
+
+    <h4>rotate()</h4>
+    <p>Rotates the fretboard for left-handed view.</p>
+
+    <h4>flip()</h4>
+    <p>Flips the fretboard vertically.</p>
+
+    <h4>removeNoteHighlights()</h4>
+    <p>Removes all highlighted notes from the fretboard.</p>
+
+    <h2 id="chord-notation">Chord Notation</h2>
+    <p>
+        The library supports various chord types and notations:
+    </p>
+    <table>
+        <tr>
+            <th>Chord Type</th>
+            <th>Notation</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td>Major</td>
+            <td>[Root]</td>
+            <td>C, G, D</td>
+        </tr>
+        <tr>
+            <td>Minor</td>
+            <td>[Root]m or [Root]min</td>
+            <td>Am, Dmin</td>
+        </tr>
+        <tr>
+            <td>Dominant 7th</td>
+            <td>[Root]7</td>
+            <td>G7, D7</td>
+        </tr>
+        <tr>
+            <td>Major 7th</td>
+            <td>[Root]maj7</td>
+            <td>Cmaj7, Fmaj7</td>
+        </tr>
+        <tr>
+            <td>Minor 7th</td>
+            <td>[Root]m7 or [Root]min7</td>
+            <td>Am7, Emin7</td>
+        </tr>
+        <tr>
+            <td>Suspended 4th</td>
+            <td>[Root]sus4</td>
+            <td>Dsus4, Asus4</td>
+        </tr>
+        <tr>
+            <td>Suspended 2nd</td>
+            <td>[Root]sus2</td>
+            <td>Asus2, Esus2</td>
+        </tr>
+        <tr>
+            <td>Diminished</td>
+            <td>[Root]dim</td>
+            <td>Bdim, Fdim</td>
+        </tr>
+        <tr>
+            <td>Diminished 7th</td>
+            <td>[Root]dim7</td>
+            <td>Bdim7, Fdim7</td>
+        </tr>
+        <tr>
+            <td>Augmented</td>
+            <td>[Root]aug</td>
+            <td>Caug, Gaug</td>
+        </tr>
+        <tr>
+            <td>Add9</td>
+            <td>[Root]add9</td>
+            <td>Cadd9, Gadd9</td>
+        </tr>
+        <tr>
+            <td>Dominant 9th</td>
+            <td>[Root]9</td>
+            <td>G9, D9</td>
+        </tr>
+        <tr>
+            <td>Minor 9th</td>
+            <td>[Root]m9 or [Root]min9</td>
+            <td>Am9, Emin9</td>
+        </tr>
+    </table>
+
+    <h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+    <p>
+        When keyboard shortcuts are enabled using <code>listenToKeyPress(fretboard)</code>, the following shortcuts are available:
+    </p>
+    <table>
+        <tr>
+            <th>Key</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">Space</span></td>
+            <td>Play/pause chord progression</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">←</span> (Left Arrow)</td>
+            <td>Go to previous chord</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">→</span> (Right Arrow)</td>
+            <td>Go to next chord</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">Esc</span></td>
+            <td>Clear the fretboard</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">r</span></td>
+            <td>Rotate the fretboard (for left-handed view)</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">f</span></td>
+            <td>Flip the fretboard vertically</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">a-g</span></td>
+            <td>Set root note for chord building</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">m</span></td>
+            <td>Add minor quality to chord</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">a</span></td>
+            <td>Add augmented quality to chord</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">d</span></td>
+            <td>Add diminished quality to chord</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">s</span></td>
+            <td>Add suspended quality to chord</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">#</span> or <span class="keyboard-shortcut">b</span></td>
+            <td>Add accidental to root note</td>
+        </tr>
+        <tr>
+            <td><span class="keyboard-shortcut">7</span>, <span class="keyboard-shortcut">9</span></td>
+            <td>Add extension to chord</td>
+        </tr>
+    </table>
+
+    <div class="note">
+        <p><strong>Note:</strong> Chord building with keyboard shortcuts has a 3-second timeout. If no key is pressed within 3 seconds, the chord input is reset.</p>
+    </div>
+
+    <h2 id="examples">Examples</h2>
+
+    <h3>Displaying Different Chord Types</h3>
+    <pre><code>// Major chord
+fretboard.highlightChordTones("C");
+
+// Minor chord
+fretboard.highlightChordTones("Am");
+
+// Dominant 7th chord
+fretboard.highlightChordTones("G7");
+
+// Major 7th chord
+fretboard.highlightChordTones("Cmaj7");
+
+// Minor 7th chord
+fretboard.highlightChordTones("Am7");
+
+// Dominant 9th chord
+fretboard.highlightChordTones("G9");</code></pre>
+
+    <h3>Playing Chord Progressions</h3>
+    <pre><code>// Play a I-IV-V progression in C major (C, F, G) at 120 BPM
+fretboard.playChords(["C:4", "F:4", "G:4"], 120);
+
+// Play a ii-V-I progression in C major (Dm7, G7, Cmaj7) at 100 BPM
+fretboard.playChords(["Dm7:4", "G7:4", "Cmaj7:8"], 100);
+
+// Play a chord progression with different beat counts
+fretboard.playChords(["Am:2", "F:2", "C:2", "G:2"], 80);</code></pre>
+
+    <h3>Using Positions</h3>
+    <pre><code>// Display C major chord in first position
+fretboard.highlightChordInPosition("C", 1);
+
+// Display C major chord in second position
+fretboard.highlightChordInPosition("C", 2);
+
+// Display C major chord in third position
+fretboard.highlightChordInPosition("C", 3);</code></pre>
+
+    <h3>Using with Metronome</h3>
+    <pre><code>// Play a chord progression with metronome enabled
+fretboard.playChords(["G:4", "Em:4", "C:4", "D:4"], 100, true);</code></pre>
+
+    <footer>
+        <p>GuitarFretboard Library Documentation - Created for educational purposes</p>
+    </footer>
+</body>
+</html>

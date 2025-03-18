@@ -24,18 +24,18 @@ function listenToKeyPress(fretboard) {
         // Navigation controls
         if (event.key === "ArrowLeft") {
             // Go to previous chord
-            if (fretboard.playChords && typeof fretboard.previousChord === 'function') {
+            if (fretboard.chordSequence && typeof fretboard.previousChord === 'function') {
                 fretboard.previousChord();
-                if (typeof fretboard.playChords.getCurrentChord === 'function') {
-                    fretboard.highlightChordTones(fretboard.playChords.getCurrentChord());
+                if (typeof fretboard.chordSequence.getCurrentChord === 'function') {
+                    fretboard.highlightChordTones(fretboard.chordSequence.getCurrentChord());
                 }
             }
         } else if (event.key === "ArrowRight") {
             // Go to next chord
-            if (fretboard.playChords && typeof fretboard.nextChord === 'function') {
+            if (fretboard.chordSequence && typeof fretboard.nextChord === 'function') {
                 fretboard.nextChord();
-                if (typeof fretboard.playChords.getCurrentChord === 'function') {
-                    fretboard.highlightChordTones(fretboard.playChords.getCurrentChord());
+                if (typeof fretboard.chordSequence.getCurrentChord === 'function') {
+                    fretboard.highlightChordTones(fretboard.chordSequence.getCurrentChord());
                 }
             }
         } else if (event.key === " ") {
@@ -43,8 +43,20 @@ function listenToKeyPress(fretboard) {
             if (fretboard.timeout) {
                 clearTimeout(fretboard.timeout);
                 fretboard.timeout = null;
-            } else if (fretboard.playChords && typeof fretboard.playCurrentChord === 'function') {
+                
+                // Update play/pause button if it exists
+                const playPauseButton = fretboard.parentElement.querySelector('#_gf_controls button:first-child');
+                if (playPauseButton) {
+                    playPauseButton.innerText = '▶️';
+                }
+            } else if (fretboard.chordSequence && typeof fretboard.playCurrentChord === 'function') {
                 fretboard.playCurrentChord();
+                
+                // Update play/pause button if it exists
+                const playPauseButton = fretboard.parentElement.querySelector('#_gf_controls button:first-child');
+                if (playPauseButton) {
+                    playPauseButton.innerText = '⏸️';
+                }
             }
         } else if (event.key === "Escape") {
             // Escape key clears the fretboard

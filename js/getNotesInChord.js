@@ -26,7 +26,8 @@ function getNotesInChord(chord) {
         dim7:  [0, 3, 6, 9],
         aug:   [0, 4, 8],
         add9:  [0, 4, 7, 14],
-        m9:    [0, 3, 7, 10, 14]
+        m9:    [0, 3, 7, 10, 14],
+        dom9:  [0, 4, 7, 10, 14] // Added dominant 9 chord formula
     };
     
     let root = '';
@@ -76,6 +77,9 @@ function getNotesInChord(chord) {
             formula = 'aug';
         } else if (chord.includes("add9")) {
             formula = 'add9';
+        } else if (chord.includes("9")) {
+            // Handle dominant 9 chords (e.g., C9, G9)
+            formula = 'dom9';
         } else if (chord.includes("7")) {
             formula = 'dom7';
         } else {
